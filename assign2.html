@@ -1,0 +1,157 @@
+<html>
+
+
+<head>
+
+    <title>TCSS 460 | Assignment 2</title>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+</head> 
+
+<body class="tiled">
+
+<header>
+    <h1>Art Filters</h1>
+</header>
+
+<main>
+    <div id="sliderBox">
+        <form>
+           <label>Opacity: </label><p><input type="range" id="sliderOpacity" min="0" max="100" value="100" class="sliders" /> <span id="numOpacity">100</span>%</p>
+           <p><label>Saturation: </label><input type="range" id="sliderSaturation" min="1" max="300" value="100" class="sliders"/> <span id="numSaturation">100</span>%</p>
+           <p><label>Brightness: </label><input type="range" id="sliderBrightness" min="0" max="300" value="100" class="sliders" /> <span id="numBrightness">100</span>%</p>
+           <p><label>Hue Rotate: </label><input type="range" id="sliderHue" min="0" max="360" value="0" class="sliders" /> <span id="numHue">0</span>deg</p>
+           <p><label>Grayscale: </label><input type="range" id="sliderGray" min="0" max="100" value="0" class="sliders"/> <span id="numGray">0</span>%</p>
+           <p><label>Blur: </label><input type="range" id="sliderBlur" min="0" max="10" value="0" class="sliders" /> <span id="numBlur">0</span>px</p>
+           <p><button href="#" id="resetFilters">Reset</button> </p>
+        </form>    
+    </div>
+
+    <figure id="imgManipulated">
+        <img src="images/medium/painting1.jpg" > 
+        <figcaption>
+            <em>Still Life with Flowers in a Glass Vase</em> <br>
+            Jan Davidsz. de Heem, 1650 - 1683
+        </figcaption>
+    </figure>   
+
+    <div id="thumbBox">
+        <div><img src="images/small/painting1.jpg"  alt="Still Life with Flowers in a Glass Vase" title="Jan Davidsz. de Heem, 1650 - 1683"/></div>
+        <div><img src="images/small/painting2.jpg"  alt="Portrait of Alida Christina Assink" title="Jan Adam Kruseman, 1833"/></div>
+        <div><img src="images/small/painting3.jpg"  alt="Self-portrait" title="Vincent van Gogh, 1887"/></div>
+        <div><img src="images/small/painting4.jpg"  alt="William II, Prince of Orange, and his Bride, Mary Stuart" title="Anthony van Dyck, 1641"/></div>
+        <div><img src="images/small/painting5.jpg"  alt="Milkmaid" title="Johannes Vermeer, c. 1660"/></div>
+    </div>
+
+</main>
+
+<script>
+
+     $("#thumbBox img").click(function(e){
+         var image = $(e.target).attr("src");
+
+         var text1=$(e.target).attr("alt");
+         var text2 = $(e.target).attr("title");
+         var text3="<em>"+text1+"</em> <br>"+text2; 
+
+         var tempText= image.split('/');
+         image= tempText[0] +"/" + "medium" + "/"+ tempText[2];
+
+         $("#imgManipulated img").attr("src", image);
+         $("#imgManipulated figcaption").html(text3);
+     })
+
+     $(function(){
+
+        $("#sliderOpacity").on("input",function(e){
+            var val=e.target.value;
+            $(e.target).parent().children(':last-child').text(val);
+
+            updateImageFilter();
+        })
+
+        $("#sliderSaturation").on("input",function(e){
+            var val=e.target.value;
+            $(e.target).parent().children(':last-child').text(val);
+
+            updateImageFilter();
+
+        })
+
+        $("#sliderBrightness").on("input",function(e){
+            var val=e.target.value;
+            $(e.target).parent().children(':last-child').text(val);
+
+            updateImageFilter();
+        })
+
+        $("#sliderHue").on("input",function(e){
+            var val=e.target.value;
+            $(e.target).parent().children(':last-child').text(val);
+
+            updateImageFilter();
+        })
+
+        $("#sliderGray").on("input",function(e){
+            var val=e.target.value;
+            $(e.target).parent().children(':last-child').text(val);
+
+            updateImageFilter();
+        })
+
+        $("#sliderBlur").on("input",function(e){
+            var val=e.target.value;
+            $(e.target).parent().children(':last-child').text(val);
+
+            updateImageFilter();
+        })
+
+        $("#resetFilters").click(function(e){
+             e.preventDefault();
+             resetFun();
+             var cssSettings = "opacity(100%) saturate(100%) brightness(100%) hue-rotate(0deg) grayscale(0%) blur(0px)";
+             var manipulateImage = $('#imgManipulated img');
+             manipulateImage.css('-webkit-filter', cssSettings);
+             manipulateImage.css('filter', cssSettings);
+        })
+
+        function resetFun(){
+            $("#sliderOpacity").val("100");
+            $("#sliderSaturation").val("100");
+            $("#sliderBrightness").val("100");
+            $("#sliderHue").val("0");
+            $("#sliderGray").val("0");
+            $("#sliderBlur").val("0");
+
+            $("#numOpacity").text(100);
+            $("#numSaturation").text(100);
+            $("#numBrightness").text(100);
+            $("#numHue").text(0);
+            $("#numGray").text(0);
+            $("#numBlur").text(0);
+        }
+
+        function updateImageFilter() {
+        var opacityVal = $("#sliderOpacity").val();
+        var saturationVal = $("#sliderSaturation").val();
+        var BrightnessVal = $("#sliderBrightness").val();
+        var HueVal = $("#sliderHue").val();
+        var GrayscaleVal = $("#sliderGray").val();
+        var BlurVal = $("#sliderBlur").val();
+
+
+        var cssSettings = "opacity(" + opacityVal + "%) saturate(" + saturationVal + "%)"+ "brightness(" + BrightnessVal + "%)" +"hue-rotate(" + HueVal + "deg)" + "grayscale(" + GrayscaleVal + "%)" + "blur(" + BlurVal + "px)" ;
+
+
+        var manipulateImage = $('#imgManipulated img');
+        manipulateImage.css('-webkit-filter', cssSettings);
+        manipulateImage.css('filter', cssSettings);
+    }
+     })
+
+</script>    
+</body>   
+</html>
